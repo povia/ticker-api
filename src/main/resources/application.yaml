@@ -1,0 +1,7 @@
+spring:
+  devtools.restart.enabled: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ticker?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: test
+    password: test

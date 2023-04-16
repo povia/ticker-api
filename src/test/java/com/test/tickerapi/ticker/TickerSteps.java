@@ -6,11 +6,11 @@ import io.restassured.response.Response;
 import org.springframework.http.MediaType;
 
 public class TickerSteps {
-    public static ExtractableResponse<Response> getTickers() {
+    public static ExtractableResponse<Response> 티커_조회() {
         return RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get()
+                .when().get("ticker")
                 .then().log().all().extract();
     }
 }
