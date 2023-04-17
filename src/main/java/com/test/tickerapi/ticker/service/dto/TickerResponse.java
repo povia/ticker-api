@@ -1,6 +1,7 @@
 package com.test.tickerapi.ticker.service.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @param timestamp 거래일자
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
  * @param close     종가가격
  * @param volume    거래량
  */
-public record TickerResponse(Long timestamp, BigDecimal high, BigDecimal low, BigDecimal open, BigDecimal close,
+public record TickerResponse(Long timestamp, BigDecimal high, BigDecimal low, BigDecimal open,
+                             BigDecimal close,
                              BigDecimal volume) {
 }

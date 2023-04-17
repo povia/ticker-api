@@ -32,7 +32,7 @@ public class YahooFinanceClient {
 
     private static final String PREFIX = "";
 
-    public List<Quote> getDailyTicker(DailyTickerRequest request) {
+    public YahooFinanceResponse getDailyTicker(DailyTickerRequest request) {
 
         UriComponents uriComponents = UriComponentsBuilder
                 .fromUriString(baseUrl)
@@ -42,13 +42,14 @@ public class YahooFinanceClient {
                 .encode()
                 .build();
 
-        YahooFinanceResponse response = null;
+        String response = restTemplate.getForObject(uriComponents.toUri(), String.class);
+        YahooFinanceResponse result = null;
         try {
-            response = objectMapper.readValue(restTemplate.getForObject(uriComponents.toUri(), String.class), YahooFinanceResponse.class);
+            result = objectMapper.readValue(response, YahooFinanceResponse.class);
         } catch (JsonProcessingException e) {
             throw new ExternalParseException(e);
         }
-        return response.chart().result().stream().map(r -> r.indicators().quote()).flatMap(Collection::stream).toList();
+        return result;
     }
 
 

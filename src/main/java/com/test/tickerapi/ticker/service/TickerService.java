@@ -1,33 +1,34 @@
 package com.test.tickerapi.ticker.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.test.tickerapi.external.YahooFinanceClient;
+import com.test.tickerapi.external.dto.yahoo.Quote;
+import com.test.tickerapi.ticker.entity.Ticker;
 import com.test.tickerapi.ticker.service.dto.DailyTickerRequest;
 import com.test.tickerapi.ticker.service.dto.TickerResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TickerService {
 
-    private static final String SAMSUNG_SYMBOL = "005930.KS";
-
-    private static final String DEFAULT_INTERVAL = "1d";
-
-    private static final String DEFAULT_RANGE = "5d";
-
     private final YahooFinanceClient yahooFinanceClient;
 
-    public TickerService(YahooFinanceClient yahooFinanceClient) {
+    private final TickerSaveService tickerSaveService;
+
+    public TickerService(YahooFinanceClient yahooFinanceClient, TickerSaveService tickerSaveService) {
         this.yahooFinanceClient = yahooFinanceClient;
+        this.tickerSaveService = tickerSaveService;
     }
 
-    public TickerResponse getSamsungTicker() {
-        return getTicker(new DailyTickerRequest(SAMSUNG_SYMBOL, DEFAULT_INTERVAL, DEFAULT_RANGE));
-    }
-
-    public TickerResponse getTicker(DailyTickerRequest request) {
+    public List<TickerResponse> getTicker(DailyTickerRequest request) {
         var result = yahooFinanceClient.getDailyTicker(request);
-        return null;
+
+        List<Long> timestamp = result.chart().result().stream().findFirst().get().timestamp();
+        Quote quote = result.chart().result().stream().findFirst().get().indicators().quote().stream().findFirst().get();
+
+        List<Ticker> tickers = tickerSaveService.saveTickers(timestamp, quote);
+        return tickers.stream().map(t -> new TickerResponse(t.getTimestamp(), t.getHigh(), t.getLow(), t.getOpen(), t.getClose(), t.getVolume())).toList();
     }
 
 }

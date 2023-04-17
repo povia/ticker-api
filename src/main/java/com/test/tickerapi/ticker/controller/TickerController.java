@@ -1,12 +1,13 @@
 package com.test.tickerapi.ticker.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.test.tickerapi.ticker.controller.dto.TimeRangeRequest;
 import com.test.tickerapi.ticker.service.TickerService;
+import com.test.tickerapi.ticker.service.dto.DailyTickerRequest;
 import com.test.tickerapi.ticker.service.dto.TickerResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("ticker")
@@ -18,8 +19,9 @@ public class TickerController {
         this.tickerService = tickerService;
     }
 
-    @GetMapping
-    public ResponseEntity<TickerResponse> ticker() throws JsonProcessingException {
-        return ResponseEntity.ok().body(tickerService.getSamsungTicker());
+    @GetMapping("{symbol}")
+    public ResponseEntity<List<TickerResponse>> ticker(@PathVariable("symbol") String symbol, @RequestParam TimeRangeRequest timeRangeRequest) {
+        return ResponseEntity.ok().body(tickerService.getTicker(new DailyTickerRequest(symbol, timeRangeRequest.interval(), timeRangeRequest.range())));
+
     }
 }
