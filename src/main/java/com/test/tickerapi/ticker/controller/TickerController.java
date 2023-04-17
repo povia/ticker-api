@@ -1,5 +1,6 @@
 package com.test.tickerapi.ticker.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.test.tickerapi.ticker.service.TickerService;
 import com.test.tickerapi.ticker.service.dto.TickerResponse;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class TickerController {
     }
 
     @GetMapping
-    public ResponseEntity<TickerResponse> ticker() {
+    public ResponseEntity<TickerResponse> ticker() throws JsonProcessingException {
         return ResponseEntity.ok().body(tickerService.getSamsungTicker());
     }
 }

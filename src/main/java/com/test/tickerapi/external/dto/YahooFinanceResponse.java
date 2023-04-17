@@ -1,4 +1,6 @@
 package com.test.tickerapi.external.dto;
 
-public record YahooFinanceResponse() {
+import com.test.tickerapi.external.dto.yahoo.Chart;
+
+public record YahooFinanceResponse(Chart chart) {
 }
