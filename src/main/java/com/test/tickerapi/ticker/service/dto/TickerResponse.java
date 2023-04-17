@@ -1,7 +1,8 @@
 package com.test.tickerapi.ticker.service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * @param timestamp 거래일자
@@ -11,7 +12,18 @@ import java.util.List;
  * @param close     종가가격
  * @param volume    거래량
  */
-public record TickerResponse(Long timestamp, BigDecimal high, BigDecimal low, BigDecimal open,
-                             BigDecimal close,
-                             BigDecimal volume) {
+@Schema(title = "티커 조회 결과")
+public record TickerResponse(
+        @Schema(description = "거래일자")
+        Long timestamp,
+        @Schema(description = "최고가격")
+        BigDecimal high,
+        @Schema(description = "최저가격")
+        BigDecimal low,
+        @Schema(description = "개장가격")
+        BigDecimal open,
+        @Schema(description = "종가가격")
+        BigDecimal close,
+        @Schema(description = "거래량")
+        BigDecimal volume) {
 }
