@@ -16,7 +16,7 @@ public class TickerSteps {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .queryParams(params)
-                .when().get("ticker/{symbol}", symbol)
+                .when().get("/ticker/{symbol}", symbol)
                 .then().log().all().extract();
     }
 
